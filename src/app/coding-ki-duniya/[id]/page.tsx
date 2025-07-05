@@ -1,7 +1,13 @@
 import { getNewsById } from "@/lib/newsService";
 import { notFound } from "next/navigation";
 
-export default async function CodingKiDuniyaDetailPage({ params }) {
+type CodingKiDuniyaDetailPageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function CodingKiDuniyaDetailPage({ params }: CodingKiDuniyaDetailPageProps) {
   const post = await getNewsById(params.id);
 
   if (!post || post.category !== "कोडिंग की दुनिया") {
