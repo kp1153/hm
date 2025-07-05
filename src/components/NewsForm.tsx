@@ -25,7 +25,7 @@ export default function NewsForm() {
     if (!file) return;
     setLoading(true);
     const fileName = `${Date.now()}-${file.name}`;
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from('news-images')
       .upload(fileName, file);
     if (error) {
