@@ -1,11 +1,11 @@
 import { getNewsById } from "@/lib/newsService";
 import { notFound } from "next/navigation";
 
-type Params = {
+export default async function CodingKiDuniyaDetailPage({
+  params,
+}: {
   params: { id: string };
-};
-
-export default async function CodingKiDuniyaDetailPage({ params }: Params) {
+}) {
   // पोस्ट की डिटेल लाओ
   const post = await getNewsById(params.id);
 
