@@ -1,15 +1,9 @@
 import { getNewsById } from "@/lib/newsService";
 import { notFound } from "next/navigation";
 
-export default async function CodingKiDuniyaDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  // पोस्ट की डिटेल लाओ
+export default async function CodingKiDuniyaDetailPage({ params }) {
   const post = await getNewsById(params.id);
 
-  // अगर पोस्ट नहीं मिली या कैटेगरी "कोडिंग की दुनिया" नहीं है तो 404
   if (!post || post.category !== "कोडिंग की दुनिया") {
     notFound();
   }
