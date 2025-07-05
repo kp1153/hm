@@ -8,14 +8,8 @@ export default async function HomePage() {
   const news = await fetchNews();
 
   return (
-    <main className="max-w-4xl mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">सभी खबरें</h1>
-      <Link
-        href="/news/create"
-        className="bg-blue-600 text-white px-4 py-2 rounded inline-block mb-6"
-      >
-        नई खबर जोड़ें
-      </Link>
+    <main className="max-w-4xl mx-auto p-4">      
+     
       <ul className="space-y-4">
         {news.map((item) => (
           <li key={item.id} className="border p-4 rounded shadow">
