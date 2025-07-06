@@ -1,15 +1,15 @@
-// src/app/utpati-bandar/[slug]/page.tsx
-
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{
+    slug: string;
+  }>;
 }
 
-export default async function Page({ params }: PageProps) {
-  const { slug } = await params;
-
+export default async function LalBandarDetailPage({ params }: PageProps) {
+  const { slug } = await params; // Next.js 15 में params Promise होता है
   return (
-    <div>
-      <h1>Page for: {slug}</h1>
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
+      <h1>Lal Bandar Detail Page</h1>
+      <p>Slug: {slug}</p>
     </div>
   );
 }

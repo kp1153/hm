@@ -1,16 +1,16 @@
-// src/app/jeevan-ke-rang/[id]/page.tsx
-
-interface JeevanKeRangDetailPageProps {
-  params: Promise<{ id: string }>;
+// app/jeevan-ke-rang/[slug]/page.tsx (NO "use client")
+interface PageProps {
+  params: Promise<{
+    slug: string;
+  }>;
 }
 
-export default async function JeevanKeRangDetailPage({ params }: JeevanKeRangDetailPageProps) {
-  const { id } = await params;
-  
+export default async function JeevanKeRangDetailPage({ params }: PageProps) {
+  const { slug } = await params; // Next.js 15 में params Promise होता है
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold">Jeevan Ke Rang - {id}</h1>
-      {/* बाकी आपका कोड यहाँ */}
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
+      <h1>Jeevan Ke Rang Detail Page</h1>
+      <p>Slug: {slug}</p>
     </div>
   );
 }
