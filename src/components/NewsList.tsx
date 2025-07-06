@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface NewsItem {
   id: string;
@@ -72,9 +73,11 @@ export default function NewsList({ news }: { news: NewsItem[] }) {
             <div className="lg:flex">
               {featuredNews.image_url && (
                 <div className="lg:w-2/5">
-                  <img
+                  <Image
                     src={featuredNews.image_url}
                     alt={featuredNews.title}
+                    width={600}
+                    height={400}
                     className="w-full h-64 lg:h-full object-cover"
                   />
                 </div>
@@ -142,9 +145,11 @@ export default function NewsList({ news }: { news: NewsItem[] }) {
               >
                 {item.image_url && (
                   <div className="relative overflow-hidden">
-                    <img
+                    <Image
                       src={item.image_url}
                       alt={item.title}
+                      width={400}
+                      height={200}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-3 left-3">

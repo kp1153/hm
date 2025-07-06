@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 
@@ -347,7 +347,7 @@ export default function NewsForm() {
             />
             {imageUrl && (
               <div className="mt-3">
-                <img 
+                <Image 
                   src={imageUrl} 
                   alt="Preview" 
                   className="max-h-48 rounded-md border border-gray-300 shadow-sm"
@@ -430,7 +430,7 @@ export default function NewsForm() {
                   </div>
                 </div>
                 {news.image_url && (
-                  <img src={news.image_url} alt="img" className="max-h-32 mt-2 rounded" />
+                  <img src={news.image_url} alt="Image" className="max-h-32 mt-2 rounded" />
                 )}
                 {/* खबर को नीले रंग में */}
                 <div className="text-sm mt-2 whitespace-pre-line text-blue-600">{news.content}</div>
