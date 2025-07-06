@@ -2,6 +2,18 @@ import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
 import Image from 'next/image';
 
+// पोस्ट का टाइप
+type News = {
+  id: number;
+  slug: string;
+  title: string;
+  summary?: string;
+  image_url?: string;
+  author?: string;
+  published_at: string;
+  category?: string;
+};
+
 // Supabase क्लाइंट
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -40,7 +52,7 @@ export default async function Page() {
         उत्पाती बंदर : सभी खबरें
       </h1>
       <div className="grid md:grid-cols-2 gap-8">
-        {posts.map((post: any) => (
+        {posts.map((post: News) => (
           <Link
             key={post.id}
             href={`/utpati-bandar/${post.slug}`}
