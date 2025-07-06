@@ -1,36 +1,23 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "हमारा मोर्चा",
-  description: "भारत का सबसे तेज़ न्यूज पोर्टल",
-};
+import './globals.css'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="hi">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <body className="m-0 p-0 font-sans">
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="flex-1 bg-gray-50">
+            {children}
+          </main>
+          <Footer />
+        </div>
       </body>
     </html>
-  );
+  )
 }
