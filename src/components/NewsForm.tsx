@@ -8,6 +8,8 @@ const categories = [
   "न्यूज",
   "जीवन के रंग",
   "कोडिंग की दुनिया",
+  "उत्पाती बंदर",
+  "टीम",
 ];
 
 const ADMIN_EMAIL = 'prasad.kamta@gmail.com';
