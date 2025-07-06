@@ -1,6 +1,4 @@
-import Link from "next/link";
 import { fetchNews } from "@/lib/newsService";
-import NewsActions from "@/components/NewsActions";
 import NewsList from "@/components/NewsList";
 
 export const revalidate = 0;

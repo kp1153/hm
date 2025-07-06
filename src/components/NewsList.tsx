@@ -36,6 +36,7 @@ export default function NewsList({ news }: { news: NewsItem[] }) {
       'न्यूज': 'bg-red-50 text-red-700 border-red-200',
       'जीवन के रंग': 'bg-pink-50 text-pink-700 border-pink-200',
       'कोडिंग की दुनिया': 'bg-blue-50 text-blue-700 border-blue-200'
+       'उत्पाती बंदर': 'bg-yellow-50 text-yellow-700 border-yellow-200'
     };
     return colors[category as keyof typeof colors] || 'bg-gray-50 text-gray-700 border-gray-200';
   };
@@ -124,7 +125,7 @@ export default function NewsList({ news }: { news: NewsItem[] }) {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {otherNews.map((item, index) => (
+            {otherNews.map((item) => (
               <article
                 key={item.id}
                 className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-300 group cursor-pointer"

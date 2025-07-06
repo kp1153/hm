@@ -23,7 +23,7 @@ const supabase = createClient(
 export default async function Page() {
   // Supabase से 'उत्पाती बंदर' कैटेगरी की सभी पोस्ट्स लाएँ
   const { data: posts, error } = await supabase
-    .from('posts')
+    .from('news') // ← यहाँ 'posts' की जगह 'news' करें
     .select('*')
     .eq('category', 'उत्पाती बंदर')
     .order('published_at', { ascending: false });

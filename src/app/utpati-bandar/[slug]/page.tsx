@@ -1,10 +1,8 @@
-// app/utpati-bandar/[slug]/page.tsx
-
 import { createClient } from '@supabase/supabase-js';
 import Image from 'next/image';
 
 // पोस्ट का टाइप
-type News = {
+type Post = {
   id: number;
   slug: string;
   title: string;
@@ -28,9 +26,9 @@ type PageProps = {
 export default async function Page({ params }: PageProps) {
   const { slug } = params;
 
-  // Supabase से पोस्ट फेच करें
+  // Supabase से पोस्ट फेच करें (news टेबल से)
   const { data: post, error } = await supabase
-    .from('posts')
+    .from('news') // ✅ आपकी टेबल का सही नाम
     .select('*')
     .eq('slug', slug)
     .single<Post>();
