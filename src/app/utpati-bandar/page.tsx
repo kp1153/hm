@@ -2,18 +2,6 @@ import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
 import Image from 'next/image';
 
-// पोस्ट का टाइप
-type News = {
-  id: number;
-  slug: string;
-  title: string;
-  summary?: string;
-  image_url?: string;
-  author?: string;
-  published_at: string;
-  category?: string;
-};
-
 // Supabase क्लाइंट
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -23,7 +11,7 @@ const supabase = createClient(
 export default async function Page() {
   // Supabase से 'उत्पाती बंदर' कैटेगरी की सभी पोस्ट्स लाएँ
   const { data: posts, error } = await supabase
-    .from('news') // ← यहाँ 'posts' की जगह 'news' करें
+    .from('news')
     .select('*')
     .eq('category', 'उत्पाती बंदर')
     .order('published_at', { ascending: false });
@@ -52,7 +40,7 @@ export default async function Page() {
         उत्पाती बंदर : सभी खबरें
       </h1>
       <div className="grid md:grid-cols-2 gap-8">
-        {posts.map((post) => (
+        {posts.map((post: any) => (
           <Link
             key={post.id}
             href={`/utpati-bandar/${post.slug}`}
