@@ -32,12 +32,13 @@ export default function NewsList({ news }: { news: NewsItem[] }) {
   };
 
   const getCategoryColor = (category: string) => {
-    const colors = {
-      'न्यूज': 'bg-red-50 text-red-700 border-red-200',
-      'जीवन के रंग': 'bg-pink-50 text-pink-700 border-pink-200',
-      'कोडिंग की दुनिया': 'bg-blue-50 text-blue-700 border-blue-200'
-       'उत्पाती बंदर': 'bg-yellow-50 text-yellow-700 border-yellow-200'
-    };
+   const colors = {
+  'न्यूज': 'bg-red-50 text-red-700 border-red-200',
+  'जीवन के रंग': 'bg-pink-50 text-pink-700 border-pink-200',
+  'कोडिंग की दुनिया': 'bg-blue-50 text-blue-700 border-blue-200',
+  'उत्पाती बंदर': 'bg-yellow-50 text-yellow-700 border-yellow-200'
+};
+
     return colors[category as keyof typeof colors] || 'bg-gray-50 text-gray-700 border-gray-200';
   };
 
