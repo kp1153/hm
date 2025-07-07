@@ -21,7 +21,7 @@ export default function Navbar() {
               ہمارا مورچہ
             </div>
             <div
-              className="text-blue-500 text-sm font-bold mt-1"
+              className="text-amber-800 text-sm font-bold mt-1"
               style={{ fontWeight: 'bold' }}
             >
               सच का साथ पर व्यावहारिकता का तकाजा पहले

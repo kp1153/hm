@@ -3,13 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-
 interface NewsItem {
   id: string;
   title: string;
   content: string;
   category: string;
-  image_url?: string;
+ image_url?: string | null;
   caption?: string;
   created_at?: string;
   slug?: string; // स्लग भी रखें
@@ -74,7 +73,7 @@ export default function NewsList({ news }: { news: NewsItem[] }) {
               {featuredNews.image_url && (
                 <div className="lg:w-2/5">
                   <Image
-                    src={featuredNews.image_url}
+                    src={featuredNews.image_url.trimEnd()}
                     alt={featuredNews.title}
                     width={600}
                     height={400}
@@ -146,7 +145,7 @@ export default function NewsList({ news }: { news: NewsItem[] }) {
                 {item.image_url && (
                   <div className="relative overflow-hidden">
                     <Image
-                      src={item.image_url}
+                      src={item.image_url.trimEnd()}
                       alt={item.title}
                       width={400}
                       height={200}

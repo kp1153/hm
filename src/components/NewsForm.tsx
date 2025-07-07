@@ -2,6 +2,20 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
+import { User } from '@supabase/supabase-js';
+
+type News = {
+  id: number;
+  slug: string;
+  title: string;
+  content: string;
+  summary?: string;
+  image_url?: string;
+  author?: string;
+  published_at: string;
+  category?: string;
+  caption?: string;
+};
 
 const categories = [
   "होम",
@@ -15,7 +29,7 @@ const categories = [
 const ADMIN_EMAIL = 'prasad.kamta@gmail.com';
 
 export default function NewsForm() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Login states
@@ -34,8 +48,8 @@ export default function NewsForm() {
   const [message, setMessage] = useState('');
 
   // News list & edit states
-  const [newsList, setNewsList] = useState([]);
-  const [editId, setEditId] = useState(null);
+  const [newsList, setNewsList] = useState<News[]>([]);
+  const [editId, setEditId] = useState<number | null>(null);
 
   // On mount: check user
   useEffect(() => {
@@ -61,7 +75,7 @@ export default function NewsForm() {
       .from('news')
       .select('*')
       .order('id', { ascending: false });
-    if (!error) setNewsList(data || []);
+    if (!error) setNewsList((data as News[]) || []);
   };
 
   useEffect(() => {
@@ -69,7 +83,7 @@ export default function NewsForm() {
   }, [user]);
 
   // Login handler
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setLoginMessage('');
@@ -86,8 +100,12 @@ export default function NewsForm() {
       } else {
         setLoginMessage('Login successful!');
       }
-    } catch (error) {
-      setLoginMessage('Login में त्रुटि: ' + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setLoginMessage('Login में त्रुटि: ' + error.message);
+      } else {
+        setLoginMessage('Login में अज्ञात त्रुटि');
+      }
     } finally {
       setLoading(false);
     }
@@ -103,7 +121,7 @@ export default function NewsForm() {
   };
 
   // Image upload handler
-  const handleImageUpload = async (e) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setFormLoading(true);
@@ -124,8 +142,12 @@ export default function NewsForm() {
       } else {
         throw new Error('Public URL नहीं मिल सका');
       }
-    } catch (error) {
-      setMessage('फोटो अपलोड में एरर: ' + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setMessage('फोटो अपलोड में एरर: ' + error.message);
+      } else {
+        setMessage('फोटो अपलोड में अज्ञात एरर');
+      }
       setImageUrl('');
     } finally {
       setFormLoading(false);
@@ -133,18 +155,18 @@ export default function NewsForm() {
   };
 
   // Edit handler: fill form with news data
-  const handleEdit = (news) => {
+  const handleEdit = (news: News) => {
     setEditId(news.id);
     setTitle(news.title);
     setContent(news.content);
-    setCategory(news.category);
+    setCategory(news.category || '');
     setImageUrl(news.image_url || '');
     setCaption(news.caption || '');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Delete handler
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     if (!window.confirm('क्या आप सच में डिलीट करना चाहते हैं?')) return;
     setFormLoading(true);
     try {
@@ -160,15 +182,19 @@ export default function NewsForm() {
         setImageUrl('');
         setCaption('');
       }
-    } catch (error) {
-      setMessage('Error: ' + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setMessage('Error: ' + error.message);
+      } else {
+        setMessage('Unknown error');
+      }
     } finally {
       setFormLoading(false);
     }
   };
 
   // News submit handler (add/update)
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormLoading(true);
     setMessage('');
@@ -195,8 +221,12 @@ export default function NewsForm() {
       setCaption('');
       setEditId(null);
       fetchNews();
-    } catch (error) {
-      setMessage('Error: ' + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setMessage('Error: ' + error.message);
+      } else {
+        setMessage('Unknown error');
+      }
     } finally {
       setFormLoading(false);
     }
@@ -225,7 +255,7 @@ export default function NewsForm() {
                 placeholder="ईमेल दर्ज करें"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-blue-600"
                 value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLoginEmail(e.target.value)}
                 required
                 autoComplete="email"
               />
@@ -240,13 +270,13 @@ export default function NewsForm() {
                   placeholder="पासवर्ड दर्ज करें"
                   className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-blue-600"
                   value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLoginPassword(e.target.value)}
                   required
                   autoComplete="current-password"
                 />
                 <button
                   type="button"
-                  onClick={(e) => {
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.preventDefault();
                     setShowPassword((s) => !s);
                   }}
@@ -300,7 +330,7 @@ export default function NewsForm() {
               type="text"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-blue-600"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
               required
             />
           </div>
@@ -311,7 +341,7 @@ export default function NewsForm() {
             <select
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-blue-600"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}
               required
             >
               <option value="">--चुनें--</option>
@@ -330,7 +360,7 @@ export default function NewsForm() {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[200px] text-blue-600"
               rows={10}
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
               required
             />
           </div>
@@ -350,6 +380,8 @@ export default function NewsForm() {
                 <Image 
                   src={imageUrl} 
                   alt="Preview" 
+                  width={400}
+                  height={200}
                   className="max-h-48 rounded-md border border-gray-300 shadow-sm"
                 />
                 <p className="text-sm text-gray-500 mt-2">
@@ -366,7 +398,7 @@ export default function NewsForm() {
               type="text"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-blue-600"
               value={caption}
-              onChange={(e) => setCaption(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCaption(e.target.value)}
             />
           </div>
           <button
