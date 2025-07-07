@@ -80,8 +80,8 @@ export default function Navbar() {
           <Link href="/coding-ki-duniya" className="hover:underline block text-center">
             कोडिंग की दुनिया
           </Link>
-          <Link href="/utpati-bandar" className="hover:underline block text-center">
-            उत्पाती बंदर
+          <Link href="/pratirodh" className="hover:underline block text-center">
+            प्रतिरोध
           </Link>
           <Link href="/team" className="hover:underline block text-center">
   टीम
