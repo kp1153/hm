@@ -12,17 +12,16 @@ export default async function CodingKiDuniyaPage() {
       <h1 className="text-3xl font-bold mb-6">कोडिंग की दुनिया</h1>
       <ul className="space-y-4">
         {posts.map((item) => (
-          <li key={item.id} className="border p-4 rounded shadow">
+          <li key={item.id} className="bg-white p-4 rounded shadow">
             <Link href={`/coding-ki-duniya/${item.id}`}>
-              <h2 className="text-xl font-semibold text-blue-600 hover:underline cursor-pointer">
+              <h2 className="text-xl font-semibold text-red-600 hover:underline cursor-pointer">
                 {item.title}
               </h2>
             </Link>
-            <p className="mt-2">{item.content}</p>
+            <p className="mt-2 text-blue-700">{item.content}</p>
           </li>
         ))}
-      </ul>
-      {posts.length === 0 && <p>कोई पोस्ट उपलब्ध नहीं है।</p>}
+      </ul>    
     </main>
   );
 }
