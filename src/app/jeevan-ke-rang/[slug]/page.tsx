@@ -1,12 +1,15 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import Link from 'next/link';
 import { fetchNewsBySlug } from '@/lib/newsService';
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const news = await fetchNewsBySlug(slug);
+  
   if (!news) notFound();
+  
+  // सिर्फ जीवन के रंग कैटेगरी की खबरें दिखाना
+  if (news.category !== 'जीवन के रंग') notFound();
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
@@ -44,14 +47,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <div className="text-gray-800 leading-relaxed text-base md:text-lg whitespace-pre-wrap">
             {news.content}
           </div>
-        </div>
-        <div className="text-center">
-          <Link
-            href="/jeevan-ke-rang"
-            className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700"
-          >
-            ← जीवन के रंग में वापस जाएं
-          </Link>
         </div>
       </div>
     </main>
