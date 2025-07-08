@@ -1,5 +1,3 @@
-// lib/newsService.ts
-
 import { supabase } from '@/lib/supabaseClient';
 
 export interface NewsItem {
@@ -37,6 +35,25 @@ export async function fetchNewsBySlug(slug: string): Promise<NewsItem | null> {
 
   if (error) {
     console.error('Error fetching news by slug:', error);
+    return null;
+  }
+  return data;
+}
+
+// ✅ category और slug दोनों से news fetch (safe for category routes)
+export async function fetchNewsBySlugAndCategory(
+  slug: string,
+  category: string
+): Promise<NewsItem | null> {
+  const { data, error } = await supabase
+    .from('news')
+    .select('*')
+    .eq('slug', slug)
+    .eq('category', category)
+    .single();
+
+  if (error || !data) {
+    console.error('Error fetching news by slug and category:', error);
     return null;
   }
   return data;

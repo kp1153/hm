@@ -1,15 +1,14 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { fetchNewsBySlug } from '@/lib/newsService';
+import { fetchNewsBySlugAndCategory } from '@/lib/newsService'; // ✅ नया import
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const news = await fetchNewsBySlug(slug);
-  
+
+  // ✅ category भी साथ भेज रहे हैं
+  const news = await fetchNewsBySlugAndCategory(slug, 'जीवन के रंग');
+
   if (!news) notFound();
-  
-  // सिर्फ जीवन के रंग कैटेगरी की खबरें दिखाना
-  if (news.category !== 'जीवन के रंग') notFound();
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
@@ -41,7 +40,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden">
                 <Image src={news.image_url.trimEnd()} alt={news.title} fill className="object-cover" priority />
               </div>
-              {news.caption && <p className="text-sm text-gray-600 mt-2 text-center italic">{news.caption}</p>}
+              {news.caption && (
+                <p className="text-sm text-gray-600 mt-2 text-center italic">
+                  {news.caption}
+                </p>
+              )}
             </div>
           )}
           <div className="text-gray-800 leading-relaxed text-base md:text-lg whitespace-pre-wrap">

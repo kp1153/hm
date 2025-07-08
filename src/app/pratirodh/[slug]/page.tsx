@@ -1,15 +1,14 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { fetchNewsBySlug } from '@/lib/newsService';
+import { fetchNewsBySlugAndCategory } from '@/lib/newsService'; // ✅ नया import
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const news = await fetchNewsBySlug(slug);
-  
+
+  // ✅ category के साथ fetch
+  const news = await fetchNewsBySlugAndCategory(slug, 'प्रतिरोध');
+
   if (!news) notFound();
-  
-  // सिर्फ प्रतिरोध कैटेगरी की खबरें दिखाना
-  if (news.category !== 'प्रतिरोध') notFound();
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
@@ -34,14 +33,26 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{news.title}</h1>
           <div className="flex items-center gap-4 text-sm text-gray-600 mb-6">
-            <div className="flex items-center"><span className="mr-1">🕐</span>{formatDate(news.created_at)}</div>
+            <div className="flex items-center">
+              <span className="mr-1">🕐</span>{formatDate(news.created_at)}
+            </div>
           </div>
           {news.image_url && (
             <div className="mb-6">
               <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden">
-                <Image src={news.image_url.trimEnd()} alt={news.title} fill className="object-cover" priority />
+                <Image
+                  src={news.image_url.trimEnd()}
+                  alt={news.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
               </div>
-              {news.caption && <p className="text-sm text-gray-600 mt-2 text-center italic">{news.caption}</p>}
+              {news.caption && (
+                <p className="text-sm text-gray-600 mt-2 text-center italic">
+                  {news.caption}
+                </p>
+              )}
             </div>
           )}
           <div className="text-gray-800 leading-relaxed text-base md:text-lg whitespace-pre-wrap">

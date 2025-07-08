@@ -1,15 +1,14 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { fetchNewsBySlug } from '@/lib/newsService';
+import { fetchNewsBySlugAndCategory } from '@/lib/newsService'; // 👈 नया import
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const news = await fetchNewsBySlug(slug);
-  
+
+  // 👇 category भी साथ पास कर रहे हैं
+  const news = await fetchNewsBySlugAndCategory(slug, 'कोडिंग की दुनिया');
+
   if (!news) notFound();
-  
-  // सिर्फ कोडिंग की दुनिया कैटेगरी की खबरें दिखाना
-  if (news.category !== 'कोडिंग की दुनिया') notFound();
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
