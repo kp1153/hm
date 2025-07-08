@@ -13,7 +13,8 @@ export default async function DeshVideshPage() {
       <ul className="space-y-4">
         {posts.map((item) => (
           <li key={item.id} className="bg-white p-4 rounded shadow">
-            <Link href={`/desh-videsh/${item.slug}`}>
+    <Link href={`/news/${item.slug}`}>
+
               <h2 className="text-xl font-semibold text-red-600 hover:underline cursor-pointer">
                 {item.title}
               </h2>
