@@ -47,10 +47,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         </div>
         <div className="text-center">
           <Link
-            href="/jeevan-ke-rang"
+            href="/desh-videsh"
             className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700"
           >
-            ← जीवन के रंग में वापस जाएं
+            ← देश-विदेश में वापस जाएं
           </Link>
         </div>
       </div>

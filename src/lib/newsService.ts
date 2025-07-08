@@ -10,10 +10,10 @@ export interface NewsItem {
   image_url?: string | null;
   caption?: string;
   created_at?: string;
-  slug?: string;
+  slug: string;
 }
 
-// ✅ सभी news fetch करने के लिए (होम पेज के लिए)
+// सभी news fetch करने के लिए (होम पेज के लिए)
 export async function fetchNews(): Promise<NewsItem[]> {
   const { data, error } = await supabase
     .from('news')
@@ -24,11 +24,10 @@ export async function fetchNews(): Promise<NewsItem[]> {
     console.error('Error fetching news:', error);
     return [];
   }
-
   return data || [];
 }
 
-// ✅ slug के आधार पर news fetch (डिटेल पेज)
+// slug के आधार पर news fetch (डिटेल पेज)
 export async function fetchNewsBySlug(slug: string): Promise<NewsItem | null> {
   const { data, error } = await supabase
     .from('news')
@@ -40,11 +39,10 @@ export async function fetchNewsBySlug(slug: string): Promise<NewsItem | null> {
     console.error('Error fetching news by slug:', error);
     return null;
   }
-
   return data;
 }
 
-// ✅ category के आधार पर news fetch
+// category के आधार पर news fetch
 export async function fetchNewsByCategory(category: string): Promise<NewsItem[]> {
   const { data, error } = await supabase
     .from('news')
@@ -56,11 +54,10 @@ export async function fetchNewsByCategory(category: string): Promise<NewsItem[]>
     console.error('Error fetching news by category:', error);
     return [];
   }
-
   return data || [];
 }
 
-// ✅ id के आधार पर news fetch (edit के लिए)
+// id के आधार पर news fetch (edit के लिए)
 export async function getNewsById(id: number): Promise<NewsItem | null> {
   const { data, error } = await supabase
     .from('news')
@@ -72,12 +69,11 @@ export async function getNewsById(id: number): Promise<NewsItem | null> {
     console.error('Error fetching news by ID:', error);
     return null;
   }
-
   return data;
 }
 
-// ✅ news को update करने के लिए
-export async function updateNews(id: number, newData: Partial<NewsItem>): Promise<boolean> {
+// news को update करने के लिए
+export async function updateNews(id: string, newData: Partial<NewsItem>): Promise<boolean> {
   const { error } = await supabase
     .from('news')
     .update(newData)
@@ -87,11 +83,10 @@ export async function updateNews(id: number, newData: Partial<NewsItem>): Promis
     console.error('Error updating news:', error);
     return false;
   }
-
   return true;
 }
 
-// ✅ अब ये जो गलती आ रही थी — ये लो deleteNews का function भी जोड़ दिया
+// news को delete करने के लिए
 export async function deleteNews(id: string): Promise<boolean> {
   const { error } = await supabase
     .from('news')
@@ -102,6 +97,5 @@ export async function deleteNews(id: string): Promise<boolean> {
     console.error('Error deleting news:', error);
     return false;
   }
-
   return true;
 }
