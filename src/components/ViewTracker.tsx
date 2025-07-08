@@ -5,8 +5,9 @@ import { supabase } from '@/lib/supabaseClient';
 
 export default function ViewTracker({ slug }: { slug: string }) {
   useEffect(() => {
+    if (!slug) return; // 👈 यह चेक नई लाइन है, ताकि slug अगर undefined हो तो query ना चले
+
     const incrementViews = async () => {
-      // पहले पुराना views लाओ
       const { data, error } = await supabase
         .from('news')
         .select('views')
@@ -20,7 +21,6 @@ export default function ViewTracker({ slug }: { slug: string }) {
 
       const currentViews = data.views || 0;
 
-      // अब +1 करके update करो
       const { error: updateError } = await supabase
         .from('news')
         .update({ views: currentViews + 1 })
