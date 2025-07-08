@@ -9,6 +9,7 @@ export interface NewsItem {
   caption?: string;
   created_at?: string;
   slug: string;
+  views?: number;
 }
 
 // सभी news fetch करने के लिए (होम पेज के लिए)
