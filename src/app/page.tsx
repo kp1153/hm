@@ -1,10 +1,11 @@
 import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
+import Link from "next/link";
 
 export const revalidate = 60;
 
 type NewsItem = {
-  id: string; // ✅ UUID is a string
+  id: string;
   slug: string;
   title: string;
   content: string;
@@ -13,6 +14,22 @@ type NewsItem = {
   caption?: string;
   created_at: string;
 };
+
+// कैटेगरी के अनुसार path
+function getCategoryPath(category: string): string {
+  switch (category) {
+    case 'कोडिंग की दुनिया':
+      return 'coding-ki-duniya';
+    case 'प्रतिरोध':
+      return 'pratirodh';
+    case 'देश-विदेश':
+      return 'desh-videsh';
+    case 'जीवन के रंग':
+      return 'jeevan-ke-rang';
+    default:
+      return 'news'; // fallback
+  }
+}
 
 export default async function HomePage() {
   const { data, error } = await supabase
@@ -41,10 +58,6 @@ export default async function HomePage() {
   return (
     <main className="bg-gray-50 min-h-screen px-4 py-8">
       <div className="max-w-5xl mx-auto space-y-12">
-        <h1 className="text-3xl font-bold text-center text-gray-900">
-          हमारा मोर्चा — सभी खबरें
-        </h1>
-
         {allNews.map((news) => (
           <div
             key={news.id}
@@ -57,8 +70,12 @@ export default async function HomePage() {
               </span>
             </div>
 
-            {/* शीर्षक */}
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">{news.title}</h2>
+            {/* शीर्षक लिंक */}
+            <Link href={`/${getCategoryPath(news.category)}/${news.slug}`}>
+              <h2 className="text-2xl font-bold text-blue-700 hover:underline mb-2 cursor-pointer">
+                {news.title}
+              </h2>
+            </Link>
 
             {/* तारीख */}
             <p className="text-sm text-gray-500 mb-4">
@@ -84,7 +101,7 @@ export default async function HomePage() {
               </p>
             )}
 
-            {/* पूरी खबर */}
+            {/* कंटेंट */}
             <div className="text-gray-800 whitespace-pre-wrap leading-relaxed text-base md:text-lg">
               {news.content}
             </div>

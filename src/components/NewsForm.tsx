@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { User } from '@supabase/supabase-js';
+import { uploadImageAndGetURL } from "@/lib/uploadImage";
+
 
 interface news {
   id: string;
