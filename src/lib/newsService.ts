@@ -1,48 +1,107 @@
-import { supabase } from "./supabaseClient";
+// lib/newsService.ts
 
-export type NewsItem = {
+import { supabase } from '@/lib/supabaseClient';
+
+export interface NewsItem {
   id: string;
   title: string;
   content: string;
-  image_url: string | null;
   category: string;
-  created_at: string;
-};
+  image_url?: string | null;
+  caption?: string;
+  created_at?: string;
+  slug?: string;
+}
 
-export async function fetchNews(category?: string): Promise<NewsItem[]> {
-  let query = supabase
-    .from("news")
-    .select("id, title, content, image_url, category, created_at");
-  if (category) {
-    query = query.eq("category", category);
+// ✅ सभी news fetch करने के लिए (होम पेज के लिए)
+export async function fetchNews(): Promise<NewsItem[]> {
+  const { data, error } = await supabase
+    .from('news')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching news:', error);
+    return [];
   }
-  query = query.order("created_at", { ascending: false });
-  const { data, error } = await query;
-  if (error) throw error;
+
   return data || [];
 }
 
-export async function getNewsById(id: string): Promise<NewsItem | null> {
+// ✅ slug के आधार पर news fetch (डिटेल पेज)
+export async function fetchNewsBySlug(slug: string): Promise<NewsItem | null> {
   const { data, error } = await supabase
-    .from("news")
-    .select("id, title, content, image_url, category, created_at")
-    .eq("id", id)
+    .from('news')
+    .select('*')
+    .eq('slug', slug)
     .single();
-  if (error) throw error;
+
+  if (error) {
+    console.error('Error fetching news by slug:', error);
+    return null;
+  }
+
   return data;
 }
 
-export async function addNews(news: Omit<NewsItem, "id" | "created_at">): Promise<void> {
-  const { error } = await supabase.from("news").insert([news]);
-  if (error) throw error;
+// ✅ category के आधार पर news fetch
+export async function fetchNewsByCategory(category: string): Promise<NewsItem[]> {
+  const { data, error } = await supabase
+    .from('news')
+    .select('*')
+    .eq('category', category)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching news by category:', error);
+    return [];
+  }
+
+  return data || [];
 }
 
-export async function updateNews(id: string, updates: Partial<NewsItem>): Promise<void> {
-  const { error } = await supabase.from("news").update(updates).eq("id", id);
-  if (error) throw error;
+// ✅ id के आधार पर news fetch (edit के लिए)
+export async function getNewsById(id: number): Promise<NewsItem | null> {
+  const { data, error } = await supabase
+    .from('news')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error || !data) {
+    console.error('Error fetching news by ID:', error);
+    return null;
+  }
+
+  return data;
 }
 
-export async function deleteNews(id: string): Promise<void> {
-  const { error } = await supabase.from("news").delete().eq("id", id);
-  if (error) throw error;
+// ✅ news को update करने के लिए
+export async function updateNews(id: number, newData: Partial<NewsItem>): Promise<boolean> {
+  const { error } = await supabase
+    .from('news')
+    .update(newData)
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error updating news:', error);
+    return false;
+  }
+
+  return true;
+}
+
+// ✅ अब ये जो गलती आ रही थी — ये लो deleteNews का function भी जोड़ दिया
+export async function deleteNews(id: string): Promise<boolean> {
+  const { error } = await supabase
+    .from('news')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting news:', error);
+    return false;
+  }
+
+  return true;
 }
