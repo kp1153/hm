@@ -20,7 +20,7 @@ export default function Navbar() {
   return (
     <nav className="bg-blue-900 text-white shadow">
       <div className="max-w-5xl mx-auto px-4 py-4">
-        {/* Portal Name Centered */}
+        {/* Portal Name */}
         <div className="text-center mb-4">
           <Link href="/" className="flex flex-col items-center" tabIndex={-1}>
             <h1 className="text-pink-700 text-3xl font-extrabold tracking-wide">
@@ -29,13 +29,13 @@ export default function Navbar() {
             <div className="text-green-300 text-xl font-bold font-urdu">
               ہمارا مورچہ
             </div>
-            <div className="text-amber-200 text-sm font-bold mt-1">
+            <div className="text-amber-200 text-sm font-bold mt-1 text-center">
               सच का साथ पर व्यावहारिकता का तकाजा पहले
             </div>
           </Link>
         </div>
 
-        {/* Hamburger Button (Mobile) */}
+        {/* Hamburger Toggle */}
         <div className="md:hidden flex justify-end">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -70,11 +70,11 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Menu Links */}
+        {/* Links Section */}
         <div
-          className={`mt-4 md:flex justify-around space-y-2 md:space-y-0 md:space-x-0 ${
-            isOpen ? 'block' : 'hidden'
-          } md:block`}
+          className={`flex-col md:flex-row md:flex md:items-center md:justify-center gap-2 mt-4 transition-all duration-300 ease-in-out ${
+            isOpen ? 'flex' : 'hidden md:flex'
+          }`}
         >
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -82,9 +82,11 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`hover:underline block text-center transition-colors px-3 py-1 rounded-full
-                  ${isActive ? 'bg-pink-200 text-blue-900 font-bold shadow-md' : ''}
-                `}
+                className={`text-center px-4 py-2 rounded-full transition-colors ${
+                  isActive
+                    ? 'bg-pink-200 text-blue-900 font-bold shadow'
+                    : 'hover:bg-white hover:text-blue-900'
+                }`}
               >
                 {link.label}
               </Link>

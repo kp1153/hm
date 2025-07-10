@@ -1,7 +1,4 @@
-// src/lib/uploadImage.ts
-
-import { supabase } from "./supabaseClient";
-
+import supabase from './supabaseClient';
 export async function uploadImageAndGetURL(file: File): Promise<string | null> {
   const fileExt = file.name.split(".").pop();
   const fileName = `${Date.now()}.${fileExt}`;

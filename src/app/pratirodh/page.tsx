@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { fetchNews } from "@/lib/newsService";
+import { getNewsByCategory } from "@/lib/newsService";
 
 export default async function PratirodhPage() {
-  // सभी पोस्ट लाओ
-  const allPosts = await fetchNews();
-  // सिर्फ "प्रतिरोध" कैटेगरी वाली पोस्टें फ़िल्टर करो
-  const posts = allPosts.filter(item => item.category === "प्रतिरोध");
+  // "प्रतिरोध" कैटेगरी वाली पोस्टें सीधे लाओ
+  const posts = await getNewsByCategory("प्रतिरोध");
 
   return (
     <main className="max-w-3xl mx-auto p-4">

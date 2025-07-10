@@ -1,10 +1,13 @@
 'use client';
 
 import Image from 'next/image';
+
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+
+import supabase from '@/lib/supabaseClient';
+
 import { User } from '@supabase/supabase-js';
-import { uploadImageAndGetURL } from "@/lib/uploadImage";
+
 
 
 interface news {
@@ -18,7 +21,8 @@ interface news {
   published_at: string;
   category?: string;
   caption?: string;
-};
+}
+
 
 const categories = [
   "देश-विदेश",

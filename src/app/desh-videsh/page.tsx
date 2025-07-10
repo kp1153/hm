@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { fetchNews } from "@/lib/newsService";
+import { getNewsByCategory } from "@/lib/newsService";
 
 export default async function DeshVideshPage() {
-  // सभी पोस्ट लाओ
-  const allPosts = await fetchNews();
-  // सिर्फ "देश-विदेश" कैटेगरी वाली पोस्टें फ़िल्टर करो
-  const posts = allPosts.filter(item => item.category === "देश-विदेश");
+  // "देश-विदेश" कैटेगरी वाली पोस्टें सीधे लाओ
+  const posts = await getNewsByCategory("देश-विदेश");
 
   return (
     <main className="max-w-3xl mx-auto p-4">
@@ -13,8 +11,7 @@ export default async function DeshVideshPage() {
       <ul className="space-y-4">
         {posts.map((item) => (
           <li key={item.id} className="bg-white p-4 rounded shadow">
-    <Link href={`/news/${item.slug}`}>
-
+            <Link href={`/news/${item.slug}`}>
               <h2 className="text-xl font-semibold text-red-600 hover:underline cursor-pointer">
                 {item.title}
               </h2>
@@ -22,7 +19,7 @@ export default async function DeshVideshPage() {
             <p className="mt-2 text-blue-700">{item.content}</p>
           </li>
         ))}
-      </ul>     
+      </ul>
     </main>
   );
 }

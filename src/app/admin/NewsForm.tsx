@@ -1,11 +1,12 @@
 'use client';
+import supabase from '@/lib/supabaseClient'; // ✅ यह सही है
 
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 import { User } from '@supabase/supabase-js';
 
-type DeshVidesh = {
+
+type News = {
   id: string;
   slug: string;
   title: string;
@@ -27,9 +28,10 @@ const categories = [
 
 const ADMIN_EMAIL = 'prasad.kamta@gmail.com';
 
-export default function DeshVideshForm() {
+export default function NewsForm() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+
 
   // Login states
   const [loginEmail, setLoginEmail] = useState('');
@@ -47,7 +49,7 @@ export default function DeshVideshForm() {
   const [message, setMessage] = useState('');
 
   // List & edit states
-  const [deshVideshList, setDeshVideshList] = useState<DeshVidesh[]>([]);
+  const [deshVideshList, setNewsList] = useState<News[]>([]);
   const [editId, setEditId] = useState<string | null>(null);
 
   // On mount: check user
@@ -69,16 +71,16 @@ export default function DeshVideshForm() {
   }, []);
 
   // Fetch news
-  const fetchDeshVidesh = async () => {
+  const fetchNews = async () => {
     const { data, error } = await supabase
       .from('news')
       .select('*')
       .order('id', { ascending: false });
-    if (!error) setDeshVideshList((data as DeshVidesh[]) || []);
+    if (!error) setNewsList((data as News[]) || []);
   };
 
   useEffect(() => {
-    if (user && user.email === ADMIN_EMAIL) fetchDeshVidesh();
+    if (user && user.email === ADMIN_EMAIL) fetchNews();
   }, [user]);
 
   // Login handler
@@ -153,7 +155,7 @@ export default function DeshVideshForm() {
   };
 
   // Edit handler
-  const handleEdit = (item: DeshVidesh) => {
+  const handleEdit = (item: News) => {
     setEditId(item.id);
     setTitle(item.title);
     setContent(item.content);
@@ -175,7 +177,7 @@ export default function DeshVideshForm() {
         throw error;
       }
       setMessage('खबर डिलीट हो गई!');
-      setDeshVideshList(deshVideshList.filter((n) => n.id !== id));
+      setNewsList(deshVideshList.filter((n) => n.id !== id));
       if (editId === id) {
         setEditId(null);
         setTitle('');
@@ -227,7 +229,7 @@ export default function DeshVideshForm() {
       setImageUrl('');
       setCaption('');
       setEditId(null);
-      fetchDeshVidesh();
+      fetchNews();
     } catch (error) {
       console.log('JS handleSubmit error:', error); // Debug
       setMessage('Unknown error');
